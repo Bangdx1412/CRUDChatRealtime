@@ -73,8 +73,12 @@
         </nav>
 
         <main class="py-4">
+            <div id="notification" class="alert mx-4 invisible">
+                Bạn đã đăng nhập!
+            </div>
             @yield('content')
         </main>
+        @yield('script')
     </div>
 </body>
 </html>

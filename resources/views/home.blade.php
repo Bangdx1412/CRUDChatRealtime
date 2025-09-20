@@ -21,3 +21,12 @@
     </div>
 </div>
 @endsection
+@section('script')
+    <script type="module">
+        Echo.channel("thongBao").listen("UserSesstionChange",e =>{
+            console.log({e});
+            
+        })
+    </script>
+    
+@endsection
