@@ -25,6 +25,12 @@
     <script type="module">
         Echo.channel("thongBao").listen("UserSesstionChange",e =>{
             console.log({e});
+            const thongBao = document.querySelector('#notification');
+            thongBao.innerText = e.user;
+            thongBao.classList.remove("invisible");
+            thongBao.classList.remove("alert-success");
+            thongBao.classList.remove("alert-danger");
+            thongBao.classList.add('alert-'+ e.type)
             
         })
     </script>

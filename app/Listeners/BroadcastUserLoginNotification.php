@@ -23,6 +23,6 @@ class BroadcastUserLoginNotification
      */
     public function handle(Login $event): void
     {
-       broadcast(new UserSesstionChange($event->user . 'đang online','success'));
+       broadcast(new UserSesstionChange($event->user->name . ' đang online','success'));
     }
 }
