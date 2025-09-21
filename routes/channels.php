@@ -19,3 +19,10 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('thongBao', function ($user, $type) {
     return $user != null;
 });
+Broadcast::channel('nguoiOnline', function ($user) {
+    if($user!=null){
+        return ['id'=>$user->id,'name'=>$user->name];
+    }else{
+        return false;
+    }
+});

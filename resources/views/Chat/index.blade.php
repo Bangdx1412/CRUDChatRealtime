@@ -99,7 +99,7 @@
                     <div class="col-md-12 box-user border" >
                         @foreach ($users as $item)
                            <div class="item">
-                                <a href="" class="d-flex" >
+                                <a href="" id="link_{{$item->id}}" class="d-flex" >
                                     <img style="width: 50px;" src="{{$item->image}}" alt="">
                                     <p>{{$item->name}}</p>
                                     {{-- <div class="status"></div> --}}
@@ -124,4 +124,47 @@
 @stop
 
 @section('script')
+    <script type="module">
+        Echo.join('nguoiOnline')
+        .here(users=>{
+            // Tất cả các user trong kênh có thể lấy hết ra
+            // ví dụ có 50 người mà mình là người thứ 51 thì khi mình vào kênh chat 
+            // Nó sẽ lấy ra hiển thị 50 ông có trong kênh chat kia
+            console.log(users);
+            users.forEach(user => {
+                // user.id là các user trong kênh chat đã đăng nhập vào
+                let elm = document.querySelector(`#link_${user.id}`);
+                
+                
+                let divShowStatus = document.createElement("div");
+                divShowStatus.classList.add("status");
+                if(elm){
+                    elm.appendChild(divShowStatus);
+                }
+              
+            });
+            
+        })
+        .joining(user=>{
+            // Khi 1 user join vào kênh chat
+            let elm = document.querySelector(`#link_${user.id}`);
+            let divShowStatus = document.createElement("div");
+                divShowStatus.classList.add("status");
+                if(elm){
+                    elm.appendChild(divShowStatus);
+                }
+            
+        })
+        .leaving(user=>{
+            // Khi 1 user out kênh chat
+            let elm = document.querySelector(`#link_${user.id}`);
+            let divShowStatus = document.querySelector(".status");
+            if(elm){
+                elm.removeChild(divShowStatus);
+            }
+        })
+        .listen('UserOnline',e=>{
+
+        })
+    </script>
 @stop
