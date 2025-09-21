@@ -88,7 +88,10 @@
     left: 12px;
     bottom: 10px
 }
-
+.my-message{
+    text-align: right;
+    color: red;
+}
 </style>
 @endsection
 @section('content')
@@ -111,7 +114,7 @@
             </div>
             <div class="col-md-9 box-chat">
                 <div class="row">
-                    <ul class="box"></ul>
+                    <ul class="box" id="messages"></ul>
                     <form class="d-flex">
                         <input type="text" id="message" class="form-control" id="">
                         <button class="btn btn-primary" id="send" type="button">Gửi</button>
@@ -164,7 +167,28 @@
             }
         })
         .listen('UserOnline',e=>{
+            let inpMessage = document.querySelector('#message')
+            let box = document.querySelector("#messages");
+            let elmLi = document.createElement("li");
+            elmLi.textContent = `${e.user.name} : ${e.message}`;
+            if(e.user.id == {{Auth::user()->id}}){
+                elmLi.classList.add("my-message")
+            }
+            box.appendChild(elmLi);
+        })
 
+
+        // Phần chat
+        let btnSend = document.querySelector("#send");
+        let message = document.querySelector("#message")
+        btnSend.addEventListener('click',e=>{
+            // console.log("123");
+            axios.post('{{route("nhanTin")}}',{
+                'message' :  message.value
+            }).then((data)=>{
+                // console.log(data.data);
+                message.value = ""
+            })
         })
     </script>
 @stop

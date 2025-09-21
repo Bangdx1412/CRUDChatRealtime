@@ -10,14 +10,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserOnline
+class UserOnline implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
-    public function __construct($user)
+    public $message;
+    public function __construct($user, $message)
     {
        $this->user = $user;
+       $this->message = $message;
     }
 
     
