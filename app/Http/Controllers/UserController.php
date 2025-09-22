@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\UserCreated;
+use App\Events\UserDeleted;
 use App\Events\UserUpdated;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,5 +43,10 @@ class UserController extends Controller
         User::where('id', $req->id)->update($data);
          $user = User::select('id','name','email','image')->find($req->id);
         broadcast(new UserUpdated($user));
+    }
+    public function deleteUser(Request $req){
+         $user = User::select('id','name','email','image')->find($req->id);
+         broadcast(new UserDeleted($user));
+        User::where('id',$req->id)->delete();
     }
 }

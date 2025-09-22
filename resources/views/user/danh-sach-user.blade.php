@@ -34,11 +34,11 @@
                                 <td>{{$item->email}}</td>
                                 <td>
                                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalUpdate" data-bs-id="{{$item->id}}">Sửa</button>
-                                    <button class="btn btn-danger">Xóa</button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="{{$item->id}}">Xóa</button>
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
+                    </tbody>"
                 </table>
             </div>
         </div>
@@ -105,6 +105,24 @@
             </div>
         </div>
         </div>
+        {{-- Modal Delete --}}
+        <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalDeleteLabel">Cảnh báo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                       <p class="text-danger">Bạn muốn xóa không</p>
+                    </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-warning" id="xoa">Xóa</button>
+            </div>
+            </div>
+        </div>
+        </div>
 @stop
 
 @section('script')
@@ -157,18 +175,24 @@
         })
         .listen('UserUpdated',e =>{
             let tbody = document.querySelector(".table tbody");
-          let tr = tbody.querySelector(`#row${e.user.id}`)
-          let UI = `
-            <td>${e.user.id}</td>
-                <td>${e.user.name}</td>
-                <td><img src="${e.user.image}" class="img-user" alt=""></td>
-                <td>${e.user.email}</td>
-                <td>
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalUpdate" data-bs-id="${e.user.id}">Sửa</button>
-                    <button class="btn btn-danger">Xóa</button>
-                </td>
-          `
-          tr.innerHTML = UI
+            let tr = tbody.querySelector(`#row${e.user.id}`)
+            let UI = `
+                <td>${e.user.id}</td>
+                    <td>${e.user.name}</td>
+                    <td><img src="${e.user.image}" class="img-user" alt=""></td>
+                    <td>${e.user.email}</td>
+                    <td>
+                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalUpdate" data-bs-id="${e.user.id}">Sửa</button>
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDelete" data-bs-id="${e.user.id}">Xóa</button>
+                    </td>
+            `
+            tr.innerHTML = UI
+        })
+        .listen('UserDeleted',e =>{
+            let tbody = document.querySelector(".table tbody");
+            let tr = tbody.querySelector(`#row${e.user.id}`);
+            tr.remove();
+            
         })
         
     
@@ -217,6 +241,37 @@
             console.log(response);
             
             let btnClose = document.querySelector("#modalUpdate .btn-close");
+            btnClose.click();
+            refesh();
+            
+        })
+    })
+</script>
+<script type="module">
+    let myModalEl = document.getElementById("modalDelete")
+    let idDelete;
+      myModalEl.addEventListener('show.bs.modal', event => {
+        let button = event.relatedTarget;
+        let id = button.getAttribute('data-bs-id');
+        // console.log(id);
+        idDelete = id;
+    })
+    
+      myModalEl.addEventListener('hidden.bs.modal', event => {
+        idDelete = undefined;
+    })
+    function refesh() {
+        idDelete = undefined
+    }
+    let xoa = document.querySelector("#xoa");
+    xoa.addEventListener('click',function(){
+         axios.post('{{route("deleteUser")}}',{
+            id:idDelete
+         })
+        .then(response=>{
+            console.log(response);
+            
+            let btnClose = document.querySelector("#modalDelete .btn-close");
             btnClose.click();
             refesh();
             

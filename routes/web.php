@@ -32,4 +32,5 @@ Route::middleware('authentication')->group(function(){
     Route::post('addUSer',[UserController::class,'addUSer'])->name('addUSer');
     Route::post('detailUser',[UserController::class,'detailUser'])->name('detailUser');
     Route::post('updateUser',[UserController::class,'updateUser'])->name('updateUser');
+    Route::post('deleteUser',[UserController::class,'deleteUser'])->name('deleteUser');
 });
