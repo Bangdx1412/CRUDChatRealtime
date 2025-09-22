@@ -30,4 +30,6 @@ Route::middleware('authentication')->group(function(){
 
     Route::get('danh-sach-user',[UserController::class,'danhSachUsers'])->name('danh-sach-user');
     Route::post('addUSer',[UserController::class,'addUSer'])->name('addUSer');
+    Route::post('detailUser',[UserController::class,'detailUser'])->name('detailUser');
+    Route::post('updateUser',[UserController::class,'updateUser'])->name('updateUser');
 });
