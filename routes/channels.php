@@ -26,3 +26,7 @@ Broadcast::channel('nguoiOnline', function ($user) {
         return false;
     }
 });
+Broadcast::channel('users', function ($user) {
+   return $user != null;
+});
+
