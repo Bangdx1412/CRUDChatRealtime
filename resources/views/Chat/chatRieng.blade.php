@@ -100,15 +100,15 @@
             <div class="col-md-3 box-users">
                 <div class="row">
                     <div class="col-md-12 box-user border" >
-                        @foreach ($users as $item)
+                    
                            <div class="item">
-                                <a href="{{route('chatPrivate', $item->id)}}" id="link_{{$item->id}}" class="d-flex" >
-                                    <img style="width: 50px;" src="{{$item->image}}" alt="">
-                                    <p>{{$item->name}}</p>
+                                <a href="#" id="link_{{$user->id}}" class="d-flex" >
+                                    <img style="width: 50px;" src="{{$user->image}}" alt="">
+                                    <p>{{$user->name}}</p>
                                     {{-- <div class="status"></div> --}}
                                 </a>
                            </div>
-                        @endforeach
+                      
                     </div>
                 </div>
             </div>
@@ -166,29 +166,40 @@
                 elm.removeChild(divShowStatus);
             }
         })
-        .listen('UserOnline',e=>{
-            let inpMessage = document.querySelector('#message')
-            let box = document.querySelector("#messages");
-            let elmLi = document.createElement("li");
-            elmLi.textContent = `${e.user.name} : ${e.message}`;
-            if(e.user.id == {{Auth::user()->id}}){
-                elmLi.classList.add("my-message")
-            }
-            box.appendChild(elmLi);
-        })
-
-
+        
         // Phần chat
         let btnSend = document.querySelector("#send");
         let message = document.querySelector("#message")
         btnSend.addEventListener('click',e=>{
             // console.log("123");
-            axios.post('{{route("nhanTin")}}',{
-                'message' :  message.value
+            axios.post('{{route("nhanTinRieng", $user->id)}}',{
+                'message' :  message.value 
             }).then((data)=>{
                 // console.log(data.data);
                 message.value = ""
             })
         })
+    </script>
+    <script type="module">
+        Echo.private(`chatPrivate.{{Auth::user()->id}}.{{$user->id}}`)
+            .listen('ChatRieng',e =>{
+                console.log(e);
+                
+            let message = document.querySelector('#messages');
+            let itemElement = document.createElement('li');
+            itemElement.textContent = `${e.nguoiGui.name}: ${e.noiDung}`;
+                itemElement.classList.add('my-message');
+            message.appendChild(itemElement)
+        })
+        Echo.private(`chatPrivate.{{$user->id}}.{{Auth::user()->id}}`)
+            .listen('ChatRieng',e =>{
+                console.log(e);
+                
+            let message = document.querySelector('#messages');
+            let itemElement = document.createElement('li');
+            itemElement.textContent = `${e.nguoiGui.name}: ${e.noiDung}`;
+            message.appendChild(itemElement)
+        })
+
     </script>
 @stop

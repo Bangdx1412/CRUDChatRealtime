@@ -30,3 +30,12 @@ Broadcast::channel('users', function ($user) {
    return $user != null;
 });
 
+Broadcast::channel('chatPrivate.{idNguoiGui}.{idNguoiNhan}', function ($user,$idNguoiGui,$idNguoiNhan) {
+   if($user != null){
+        if($user->id == $idNguoiGui || $user->id == $idNguoiNhan){
+            return true;
+        }
+   }
+   return false;
+});
+
