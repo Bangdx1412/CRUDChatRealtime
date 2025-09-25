@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,7 +22,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('authentication')->group(function(){
     Route::get('/list-user', [ChatController::class, 'chatPublic'])->name('chatPublic');
@@ -35,4 +36,9 @@ Route::middleware('authentication')->group(function(){
     Route::post('detailUser',[UserController::class,'detailUser'])->name('detailUser');
     Route::post('updateUser',[UserController::class,'updateUser'])->name('updateUser');
     Route::post('deleteUser',[UserController::class,'deleteUser'])->name('deleteUser');
+
+
+
+    Route::post('createGroupChat',[HomeController::class,'createGroupChat'])->name('createGroupChat');
+    
 });
