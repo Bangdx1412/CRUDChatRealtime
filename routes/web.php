@@ -40,5 +40,7 @@ Route::middleware('authentication')->group(function(){
 
 
     Route::post('createGroupChat',[HomeController::class,'createGroupChat'])->name('createGroupChat');
+    Route::get('chatGroup/{groupChatId}',[HomeController::class,'chatGroup'])->name('chatGroup');
+    Route::post('nhanTinNhom',[HomeController::class,'nhanTinNhom'])->name('nhanTinNhom');
     
 });

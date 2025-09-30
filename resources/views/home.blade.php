@@ -3,6 +3,28 @@
 @section('content')
 <div class="container">
     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createGroupChat">Tạo nhóm</button>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <h4>Nhóm của bạn</h4>
+            <ul>@foreach ($myGroup as $item)
+                
+                <li>
+                    <a href="{{route('chatGroup',$item->id)}}">{{$item->name}}</a>
+                </li>
+            @endforeach
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4>Nhóm bạn làm thành viên</h4>
+            <ul>
+                @foreach ($myGroupNotLeader as $item)
+                    <li>
+                        <a href="{{route('chatGroup',$item->groupchatID)}}">{{$item->name}}</a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+      </div>
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -30,9 +52,10 @@
         <h1 class="modal-title fs-5" id="createGroupChatLabel">Tạo nhóm chat</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      
       <div class="modal-body">
         <div class="mb-3">
-            <label for="tenNhom">Tên nhóm</label>
+            <label for="name">Tên nhóm</label>
             <input type="text" name="tenNhom" id="name" class="form-control">
         </div>
         <div class="mb-3">

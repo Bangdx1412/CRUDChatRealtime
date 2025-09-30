@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\GroupChat;
+use App\Events\GroupChatEvent;
+use App\Models\GroupChatDetail;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -35,6 +38,16 @@ Broadcast::channel('chatPrivate.{idNguoiGui}.{idNguoiNhan}', function ($user,$id
         if($user->id == $idNguoiGui || $user->id == $idNguoiNhan){
             return true;
         }
+   }
+   return false;
+});
+Broadcast::channel('chatGroup.{groupId}', function ($user,$groupId) {
+   if($user != null ){
+       $group = GroupChat::find($groupId);
+       $member_id = GroupChatDetail::where('groupchat_id',$groupId)->pluck('member_id')->toArray();
+       if($user->id == $group->leader || in_array($user->id,$member_id)){
+            return true;
+       }
    }
    return false;
 });
